@@ -187,3 +187,16 @@ class LoginView(View):
             response.set_cookie('username', user.username, max_age=30 * 24 * 3600)
         #返回响应
         return response
+
+from django.contrib.auth import logout
+class LogoutView(View):
+
+    def get(self,request):
+        # 清理session
+        logout(request)
+        # 退出登录，重定向到登录页
+        response = redirect(reverse('home:index'))
+        # 退出登录时清除cookie中的登录状态
+        response.delete_cookie('is_login')
+
+        return response

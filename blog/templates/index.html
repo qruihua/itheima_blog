@@ -59,12 +59,12 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="display: block" v-show="show_menu">
                         <a class="dropdown-item" href="../static/write_blog.html">写文章</a>
                         <a class="dropdown-item" href='../static/center.html'>个人信息</a>
-                        <a class="dropdown-item" href='#'>退出登录</a>
+                        <a class="dropdown-item" href='{% url 'users:logout' %}'>退出登录</a>
                     </div>
                 </li>
                 <!-- 如果用户未登录，则显示登录按钮 -->
                 <li class="nav-item" v-else>
-                    <a class="nav-link" href="login.html">登录</a>
+                    <a class="nav-link" href="{% url 'users:login' %}">登录</a>
                 </li>
             </ul>
         </div>
