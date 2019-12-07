@@ -137,11 +137,10 @@ var vm = new Vue({
                             }
                         }, 1000, 60)
                     } else {
-                        if (response.data.code == '400') {
+                        if (response.data.code == '4001') {
                             //图片验证码错误
                             this.image_code_error = true;
                         }
-                        this.sms_code_error = true;
                         this.generate_image_code();
                         this.sending_flag = false;
                     }
