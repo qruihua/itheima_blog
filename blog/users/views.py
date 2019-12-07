@@ -132,3 +132,58 @@ class SmsCodeView(View):
 
         # 响应结果
         return JsonResponse({'code': RETCODE.OK, 'errmsg': '发送短信成功'})
+
+from django.contrib.auth import login
+from django.contrib.auth import authenticate
+
+class LoginView(View):
+
+    def get(self,request):
+        return render(request,'login.html')
+    def post(self,request):
+        # 接受参数
+        mobile = request.POST.get('mobile')
+        password = request.POST.get('password')
+        remember = request.POST.get('remember')
+
+        # 校验参数
+        # 判断参数是否齐全
+        if not all([mobile, password]):
+            return HttpResponseBadRequest('缺少必传参数')
+
+        # 判断手机号是否正确
+        if not re.match(r'^1[3-9]\d{9}$', mobile):
+            return HttpResponseBadRequest('请输入正确的手机号')
+
+        # 判断密码是否是8-20个数字
+        if not re.match(r'^[0-9A-Za-z]{8,20}$', password):
+            return HttpResponseBadRequest('密码最少8位，最长20位')
+
+        # 认证登录用户
+        # 认证字段已经在User模型中的USERNAME_FIELD = 'mobile'修改
+        user=authenticate(mobile=mobile, password=password)
+
+        if user is None:
+            return HttpResponseBadRequest('用户名或密码错误')
+
+        # 实现状态保持
+        login(request, user)
+
+        # 响应登录结果
+        response =  redirect(reverse('home:index'))
+
+        # 设置状态保持的周期
+        if remember != 'on':
+            # 没有记住用户：浏览器会话结束就过期
+            request.session.set_expiry(0)
+            # 设置cookie
+            response.set_cookie('is_login', True)
+            response.set_cookie('username', user.username, max_age=30 * 24 * 3600)
+        else:
+            # 记住用户：None表示两周后过期
+            request.session.set_expiry(None)
+            # 设置cookie
+            response.set_cookie('is_login', True, max_age=14*24 * 3600)
+            response.set_cookie('username', user.username, max_age=30 * 24 * 3600)
+        #返回响应
+        return response
