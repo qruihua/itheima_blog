@@ -45,7 +45,7 @@
                     <div class="form-group mb-1">
                         <label for="id_password">密码:</label>
                         <input type="password" name="password" placeholder="请输入密码" required id="id_password" class="form-control" v-model="password" @blur="check_password"/>
-                        <small class="form-text text-muted ml-1"><a class="secondaryAction layui-text" href="../static/forget_password.html">忘记密码?</a>
+                        <small class="form-text text-muted ml-1"><a class="secondaryAction layui-text" href="{% url 'users:forgetpassword' %}">忘记密码?</a>
                         </small>
                     </div>
                     <div class="custom-control custom-checkbox mb-2">
