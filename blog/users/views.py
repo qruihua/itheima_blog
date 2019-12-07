@@ -4,7 +4,8 @@ from django.views import View
 import re
 from users.models import User
 from django.db import DatabaseError
-
+from django.shortcuts import redirect
+from django.urls import reverse
 class RegisterView(View):
 
     def get(self,request):
@@ -45,7 +46,9 @@ class RegisterView(View):
             return HttpResponseBadRequest('注册失败')
 
         # 响应注册结果
-        return HttpResponse('注册成功，重定向到首页')
+
+        return redirect(reverse('home:index'))
+        # return HttpResponse('注册成功，重定向到首页')
 
 
 from django.http import HttpResponseBadRequest,HttpResponse
