@@ -22,9 +22,11 @@ var vm = new Vue({
         sms_code_error:false,
         sms_code_error_message:'短信验证码错误',
         sms_code_message:'点击获取验证码',
-        sending_flag:false
+        sending_flag:false,
+        image_code_url:''
     },
     mounted(){
+        this.generate_image_code();
     },
     methods: {
         //显示下拉菜单
@@ -48,10 +50,10 @@ var vm = new Vue({
             // 生成一个编号 : 严格一点的使用uuid保证编号唯一， 不是很严谨的情况下，也可以使用时间戳
             this.uuid = this.generateUUID();
             // 设置页面中图片验证码img标签的src属性
-            this.image_code_url = this.host + "/image_codes/?uuid=" + this.uuid;
+            this.image_code_url = this.host + "/imagecode/?uuid=" + this.uuid;
         },
         //检查手机号
-        check_mobie: function(){
+        check_mobile: function(){
             var re = /^1[3-9]\d{9}$/;
             if (re.test(this.mobile)) {
                 this.mobile_error = false;
