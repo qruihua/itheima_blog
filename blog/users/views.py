@@ -45,10 +45,24 @@ class RegisterView(View):
         except DatabaseError:
             return HttpResponseBadRequest('注册失败')
 
-        # 响应注册结果
+        # 实现状态保持
+        from django.contrib.auth import login
+        login(request, user)
 
-        return redirect(reverse('home:index'))
+        #设置首页所需的
+
+        # 响应注册结果
+        # return redirect(reverse('home:index'))
         # return HttpResponse('注册成功，重定向到首页')
+        #跳转到首页
+        response = redirect(reverse('home:index'))
+        #设置cookie
+        #登录状态，会话结束后自动过期
+        response.set_cookie('is_login',True)
+        #设置用户名有效期一个月
+        response.set_cookie('username',user.username,max_age=30*24*3600)
+
+        return response
 
 
 from django.http import HttpResponseBadRequest,HttpResponse
