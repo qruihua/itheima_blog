@@ -112,13 +112,13 @@ var vm = new Vue({
             }
 
             // 向后端接口发送请求，让后端发送短信验证码
-            var url = this.host + '/sms_codes/?mobile=' + this.mobile + '&image_code=' + this.image_code + '&uuid=' + this.uuid;
+            var url = this.host + '/smscode/?mobile=' + this.mobile + '&image_code=' + this.image_code + '&uuid=' + this.uuid;
             axios.get(url, {
                 responseType: 'json'
             })
                 .then(response => {
                     // 表示后端发送短信成功
-                    if (response.data.code == '200') {
+                    if (response.data.code == '0') {
                         // 倒计时60秒，60秒后允许用户再次点击发送短信验证码的按钮
                         var num = 60;
                         // 设置一个计时器
