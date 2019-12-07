@@ -6,3 +6,5 @@ class RegisterView(View):
     def get(self,request):
         return render(request,'register.html')
 
+
+
