@@ -109,48 +109,18 @@
             </div>
             <br>
             <!-- 显示评论 -->
-            <h4>共有5条评论</h4>
+            <h4>共有{{ total_count }}条评论</h4>
             <div class="row">
-                <div class="col-12" >
+                 {% for comment in comments %}
+                    <div class="col-12" >
                             <hr><p><strong style="color: pink"></strong></p>
                             <div>
-                                <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
+                                <div><span><strong>{{ comment.user.username }}</strong></span>&nbsp;<span style="color: gray">{{ comment.created | date:'Y:m:d H:i:s' }}</span></div>
                                 <br>
-                                <p>学习了</p>
+                                <p>{{ comment.content|safe }}</p>
                             </div>
                 </div>
-                <div class="col-12">
-                    <hr><p><strong style="color: pink"></strong></p>
-                    <div>
-                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                        <br>
-                        <p>学习了</p>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <hr><p><strong style="color: pink"></strong></p>
-                    <div>
-                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                        <br>
-                        <p>学习了</p>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <hr><p><strong style="color: pink"></strong></p>
-                    <div>
-                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                        <br>
-                        <p>学习了</p>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <hr><p><strong style="color: pink"></strong></p>
-                    <div>
-                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                        <br>
-                        <p>学习了</p>
-                    </div>
-                </div>
+                {% endfor %}
                 <div class="pagenation" style="text-align: center">
                     <div id="pagination" class="page"></div>
                 </div>
@@ -190,11 +160,10 @@
 <script type="text/javascript">
     $(function () {
         $('#pagination').pagination({
-            currentPage: 15,
-            totalPage: 30,
+           currentPage: {{ page_num }},
+            totalPage: {{ total_page }},
             callback:function (current) {
-
-                location.href = '/';
+                location.href = '/detail/?id={{ article.id }}&page_size={{ page_size }}&page_num='+current;
             }
         })
     });

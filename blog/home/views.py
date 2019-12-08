@@ -58,7 +58,8 @@ class DetailView(View):
         # detail/?id=xxx&page_num=xxx&page_size=xxx
         #获取文档id
         id=request.GET.get('id')
-
+        page_num=request.GET.get('page_num',1)
+        page_size=request.GET.get('page_size',5)
         # 获取博客分类信息
         categories = ArticleCategory.objects.all()
 
@@ -73,11 +74,34 @@ class DetailView(View):
         # 获取热点数据
         hot_articles = Article.objects.order_by('-total_views')[:9]
 
+        # 获取当前文章的评论数据
+        comments = Comment.objects.filter(
+            article=article
+        ).order_by('-created')
+        #获取评论总数
+        total_count = comments.count()
+
+        # 创建分页器：每页N条记录
+        paginator = Paginator(comments, page_size)
+        # 获取每页商品数据
+        try:
+            page_comments = paginator.page(page_num)
+        except EmptyPage:
+            # 如果page_num不正确，默认给用户404
+            return HttpResponseNotFound('empty page')
+        # 获取列表页总页数
+        total_page = paginator.num_pages
+
         context = {
             'categories':categories,
             'category':article.category,
             'article':article,
-            'hot_articles':hot_articles
+            'hot_articles':hot_articles,
+            'total_count': total_count,
+            'comments': page_comments,
+            'page_size': page_size,
+            'total_page': total_page,
+            'page_num': page_num,
         }
 
         return render(request,'detail.html',context=context)
@@ -113,3 +137,8 @@ class DetailView(View):
         else:
             #没有登录则跳转到登录页面
             return redirect(reverse('users:login'))
+
+"""
+insert into tb_comment(content,created,article_id,user_id)
+select content,created,article_id,user_id from tb_comment;
+"""
