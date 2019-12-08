@@ -87,15 +87,17 @@
             <!-- 发表评论 -->
             <hr>
             <br>
-            <h5 class="row justify-content-center">请<a href="login.html">登录</a>后回复
+            <h5 class="row justify-content-center" v-show="!is_login">请<a href="{% url 'users:login' %}">登录</a>后回复
             </h5>
             <br>
             <div>
-                <form action="#" method="POST">
-                <div class="form-group"><label for="body"><strong>我也要发言：</strong></label><div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ article.id }}">
+                    <div class="form-group"><label for="body"><strong>我也要发言：</strong></label><div>
 
                     <div class="django-ckeditor-widget" data-field-id="id_body" style="display: inline-block;">
-                        <textarea cols="40" id="id_body" name="body" rows="10" required data-processed="0" :data-config="data_config" data-external-plugin-resources="[]" data-id="id_body" data-type="ckeditortype">
+                        <textarea cols="40" id="id_body" name="content" rows="10" required data-processed="0" :data-config="data_config" data-external-plugin-resources="[]" data-id="id_body" data-type="ckeditortype">
 
                         </textarea>
                     </div>

@@ -50,6 +50,8 @@ class IndexView(View):
 
         return render(request, 'index.html',context=context)
 
+from home.models import Comment
+from django.shortcuts import redirect,reverse
 class DetailView(View):
 
     def get(self,request):
@@ -79,3 +81,35 @@ class DetailView(View):
         }
 
         return render(request,'detail.html',context=context)
+
+    def post(self,request):
+        #获取用户信息
+        user=request.user
+
+        #判断用户是否登录
+        if user and user.is_authenticated:
+            #接收数据
+            id=request.POST.get('id')
+            content=request.POST.get('content')
+
+            #判断商品id
+            try:
+                article = Article.objects.get(id=id)
+            except Article.DoesNotExist:
+                return HttpResponseNotFound('没有此文章')
+
+            #保存到数据
+            Comment.objects.create(
+                content=content,
+                article=article,
+                user=user
+            )
+            #修改文章评论数量
+            article.comments_count+=1
+            article.save()
+            #拼接跳转路由
+            path=reverse('home:detail')+'?id={}'.format(article.id)
+            return redirect(path)
+        else:
+            #没有登录则跳转到登录页面
+            return redirect(reverse('users:login'))
