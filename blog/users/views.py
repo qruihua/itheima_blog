@@ -297,4 +297,13 @@ class UserCenterView(LoginRequiredMixin,View):
             return HttpResponseBadRequest('更新失败，请稍后再试')
 
         # 返回响应，刷新页面
-        return redirect(reverse('users:center'))
+        response = redirect(reverse('users:center'))
+        ##更新cookie信息
+        response.set_cookie('username',user.username,max_age=30*24*3600)
+        return response
+
+class WriteBlogView(LoginRequiredMixin,View):
+
+    def get(self,request):
+
+        return render(request,'write_blog.html')

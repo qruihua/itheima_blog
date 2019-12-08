@@ -7,14 +7,12 @@
     <meta charset="utf-8">
     <!-- 网站标题 -->
     <title> 写文章 </title>
+     {% load staticfiles %}
     <!-- 引入bootstrap的css文件 -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <!-- 引入monikai.css -->
-    <link rel="stylesheet" href="md_css/monokai.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <!-- 引入vuejs -->
-    <script type="text/javascript" src="js/vue-2.5.16.js"></script>
-    <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+   <!-- 引入vuejs -->
+    <script type="text/javascript" src="{% static 'js/vue-2.5.16.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios-0.18.0.min.js' %}"></script>
 </head>
 
 <body>
@@ -24,7 +22,7 @@
     <div class="container">
         <!-- 导航栏商标 -->
         <div>
-            <a class="navbar-brand" href="../templates/index.html">个人博客</a>
+            <a class="navbar-brand" href="{% url 'home:index' %}">个人博客</a>
         </div>
     </div>
     <!--登录/个人中心-->
@@ -32,16 +30,16 @@
         <ul class="nav navbar-nav">
             <!-- 如果用户已经登录，则显示用户名下拉框 -->
             <li class="nav-item dropdown" v-if="is_login">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="show_menu_click">admin</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="show_menu_click">[[username]]</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="display: block" v-show="show_menu">
-                    <a class="dropdown-item" href="./write_blog.html">写文章</a>
-                    <a class="dropdown-item" href='../templates/center.html'>个人信息</a>
-                    <a class="dropdown-item" href='#'>退出登录</a>
+                    <a class="dropdown-item" href="{% url 'users:writeblog' %}">写文章</a>
+                    <a class="dropdown-item" href='{% url 'users:center'%}'>个人信息</a>
+                    <a class="dropdown-item" href='{% url 'users:center' %}'>退出登录</a>
                 </div>
             </li>
             <!-- 如果用户未登录，则显示登录按钮 -->
             <li class="nav-item" v-else>
-                <a class="nav-link" href="../templates/login.html">登录</a>
+                <a class="nav-link" href="{% url 'users:login' %}">登录</a>
             </li>
         </ul>
     </div>
@@ -119,13 +117,13 @@
     </div>
 </footer>
 </div>
-<!---->
-<script type="text/javascript" src="ckeditor/ckeditor-init.js" data-ckeditor-basepath="ckeditor/ckeditor/" id="ckeditor-init-script"></script>
-<script type="text/javascript" src="ckeditor/ckeditor/ckeditor.js"></script>
+<!--ckeditor-->
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}" data-ckeditor-basepath="{% static 'ckeditor/ckeditor/' %}" id="ckeditor-init-script"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <!-- 引入js -->
-<script type="text/javascript" src="js/host.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
-<script type="text/javascript" src="js/write_blog.js"></script>
+<script type="text/javascript" src="{% static 'js/host.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/write_blog.js' %}"></script>
 </body>
 
 </html>
