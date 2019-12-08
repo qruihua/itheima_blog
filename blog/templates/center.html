@@ -7,14 +7,12 @@
     <meta charset="utf-8">
     <!-- 网站标题 -->
     <title> 用户信息 </title>
+    {% load staticfiles %}
     <!-- 引入bootstrap的css文件 -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <!-- 引入monikai.css -->
-    <link rel="stylesheet" href="md_css/monokai.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <!-- 引入vuejs -->
-    <script type="text/javascript" src="js/vue-2.5.16.js"></script>
-    <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+   <!-- 引入vuejs -->
+    <script type="text/javascript" src="{% static 'js/vue-2.5.16.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios-0.18.0.min.js' %}"></script>
 </head>
 
 <body>
@@ -25,7 +23,7 @@
     <div class="container">
         <!-- 导航栏商标 -->
         <div>
-            <a class="navbar-brand" href="../templates/index.html">个人博客</a>
+            <a class="navbar-brand" href="{% url 'home:index' %}">个人博客</a>
         </div>
     </div>
     <!--登录/个人中心-->
@@ -33,16 +31,16 @@
         <ul class="nav navbar-nav">
             <!-- 如果用户已经登录，则显示用户名下拉框 -->
             <li class="nav-item dropdown" v-if="is_login">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="show_menu_click">admin</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="show_menu_click">[[username]]</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="display: block" v-show="show_menu">
-                    <a class="dropdown-item" href="write_blog.html">写文章</a>
-                    <a class="dropdown-item" href='./center.html'>个人信息</a>
-                    <a class="dropdown-item" href='#'>退出登录</a>
+                    <a class="dropdown-item" href="../static/write_blog.html">写文章</a>
+                    <a class="dropdown-item" href='{% url 'users:center' %}'>个人信息</a>
+                    <a class="dropdown-item" href='{% url 'users:logout' %}'>退出登录</a>
                 </div>
             </li>
             <!-- 如果用户未登录，则显示登录按钮 -->
             <li class="nav-item" v-else>
-                <a class="nav-link" href="../templates/login.html">登录</a>
+                <a class="nav-link" href="{% url 'users:login' %}">登录</a>
             </li>
 
         </ul>
@@ -54,15 +52,19 @@
         <div class="row">
             <div class="col-12">
                 <br>
-                <form method="post" action="../" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                     <!-- username -->
                 <div class="form-group col-md-4">
                     <label for="username">用户名</label>
-                    <input type="text" class="form-control" id="username" name="username" value="admin" >
+                    <input type="text" class="form-control" id="username" name="username" value="{{ username }}" >
                 </div>
-                <!--<br><h5 class="col-md-4">暂无头像</h5><br>-->
-                <br> <div class="col-md-4">头像</div>
-                <img src="img/mei.png" style="max-width: 20%; border-radius: 15%;" class="col-md-4"><br>
+                    {% if avatar %}
+                        <br> <div class="col-md-4">头像</div>
+                        <img src="{{ avatar }}" style="max-width: 20%; border-radius: 15%;" class="col-md-4"><br>
+                        {% else %}
+                        <br><h5 class="col-md-4">暂无头像</h5><br>
+                    {% endif %}
                     <!-- avatar -->
                     <div class="form-group col-md-4">
                         <label for="avatar">上传头像</label>
@@ -72,13 +74,13 @@
                     <!-- phone -->
                     <div class="form-group col-md-4">
                         <label for="phone">电话</label>
-                        <input type="text" class="form-control" disabled="disabled" id="phone" name="phone" value="">
+                        <input type="text" class="form-control" disabled="disabled" id="phone" name="phone" value="{{ mobile }}">
                     </div>
                     <!-- desc -->
                     <div class="form-group col-md-4">
                         <label for="desc">简介</label>
                         <!-- 文本区域 -->
-                        <textarea type="text" class="form-control" id="desc" name="desc" rows="12" ></textarea>
+                        <textarea type="text" class="form-control" id="desc" name="desc" rows="12" >{{ user_desc }}</textarea>
                     </div>
                     <!-- 提交按钮 -->
                     <button type="submit" class="btn btn-primary" style="margin-left: 12px" >修改</button>
@@ -96,9 +98,9 @@
 </footer>
 </div>
 <!-- 引入js -->
-<script type="text/javascript" src="js/host.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
-<script type="text/javascript" src="js/center.js"></script>
+<script type="text/javascript" src="{% static 'js/host.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/center.js' %}"></script>
 </body>
 
 </html>
