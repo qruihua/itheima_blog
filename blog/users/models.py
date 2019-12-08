@@ -17,3 +17,6 @@ class User(AbstractUser):
 
     # 修改认证的字段
     USERNAME_FIELD = 'mobile'
+
+    #创建超级管理员时需要必须设置的字段
+    REQUIRED_FIELDS = ['username','email']
