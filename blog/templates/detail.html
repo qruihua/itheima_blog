@@ -160,17 +160,9 @@
             <div class="sidebar__inner">
                 <h4><strong>推荐</strong></h4>
                 <hr>
-                <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                <div>
-                    <div class="toc">
-<ul></ul>
-</div>
-
-                </div>
+                {% for hot_article in hot_articles %}
+                    <a href="{% url 'home:detail' %}?id={{ hot_article.id }}" style="color: black">{{ hot_article.title }}</a><br>
+                {% endfor %}
             </div>
         </div>
     </div>
