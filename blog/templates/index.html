@@ -35,18 +35,17 @@
         <div class="collapse navbar-collapse">
             <div>
                 <ul class="nav navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link mr-2" href="#">Python</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mr-2" href="#">Java</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mr-2" href="#">C</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mr-2" href="#">C++</a>
-                    </li>
+                    {% for cat in categories %}
+                        {% if cat.id == category.id %}
+                            <li class="nav-item active">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
             </div>
         </div>
